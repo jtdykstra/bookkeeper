@@ -4,13 +4,25 @@ body {
     font-family: arial;
 }
 
-#container {
+#primary-container {
+    height: 5vh;
+}
+
+#book-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     height: 95vh;
     width: 100vw;
+}
+
+#readbooks {
+    height: 95vh;
+}
+
+#unreadbooks {
+    height: 95vh;
 }
 
 li {
@@ -26,7 +38,7 @@ li {
     width: 100vw;
     height: 5vh;
     position: fixed;
-    background-color: blue;
+    background-color: green;
 }
 
 #add-new-book {
