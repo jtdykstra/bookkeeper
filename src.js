@@ -14,6 +14,7 @@ class Book {
 }
 
 const myLibrary = [];
+let readView = false; // false to show unread books, true to show read
 
 function addBookToLibrary(book) {
     myLibrary.push(book);
@@ -26,45 +27,72 @@ addBookToLibrary(new Book("Cannery Row", "John Steinbeck", 220, 0.9, true));
 
 console.table(myLibrary);
 
-function updateBooks(book) {
-    const selector = ((book.read) ? '#readbooks' : '#unreadbooks');
-    const readBooks = document.querySelector(selector);
+function updateBooks(book, bookInd) {
+    const bookList = document.getElementById('book-list');
     const newBookItem = document.createElement('li');
     newBookItem.innerText = book.info();
-    readBooks.appendChild(newBookItem);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.addEventListener('click', deleteBookBtnHandler);
+    deleteButton.innerText = 'x';
+    deleteButton.style.color = 'red';
+    deleteButton.setAttribute('data-ind', bookInd);
+    newBookItem.appendChild(deleteButton);
+
+    const readButton = document.createElement('button');
+    readButton.addEventListener('click', readBookButtonHandler);
+    readButton.innerText = 'read';
+    readButton.setAttribute('data-ind', bookInd);
+    newBookItem.appendChild(readButton);
+
+    bookList.appendChild(newBookItem);
 }
 
-function refreshLibrary() {
-    myLibrary.forEach(book => {
-        updateBooks(book);
-    });
+function refreshLibrary(read) {
+    // remove all items from the list
+    // todo: this can probably be more efficient
+    bookList = document.getElementById('book-list');
+    while(bookList.firstChild) {
+        bookList.removeChild(bookList.lastChild);
+    }
+    
+    // now add all of the books back
+    for (let bookInd = 0; bookInd < myLibrary.length; ++bookInd) {
+        if (myLibrary[bookInd].read === read) {
+            updateBooks(myLibrary[bookInd], bookInd);
+        }
+    }
+
+    /*myLibrary.filter(book => read ? book.read : !book.read)
+             .forEach(book => {
+                updateBooks(book);
+             });
+    */
 }
 
-refreshLibrary();
+refreshLibrary(readView);
 
 // Event logic
 newBookButton = document.querySelector("#new-book");
 newBookButton.addEventListener('click', newBookButtonHandler);
 
+readBooksButton = document.querySelector("#read-books-btn");
+readBooksButton.addEventListener('click', readBooksButtonHandler);
+
+unreadBooksButton = document.querySelector("#unread-books-btn");
+unreadBooksButton.addEventListener('click', unreadBooksButtonHandler);
+
 newBookForm = document.querySelector("#new-book-form");
 newBookForm.addEventListener('submit', newBookSubmitHandler);
 
 function newBookSubmitHandler(e) {
-    console.log("WOO");
-    console.log(e);
-    console.log(e.target.elements.title.value);
-    console.log(e.target.elements.author.value);
-    console.log(e.target.elements.pages.value);
-    console.log(e.target.elements.rating.value);
-    console.log(e.target.elements.read.value);
-
     newBook = new Book(e.target.elements.title.value,
                        e.target.elements.author.value,
                        Number(e.target.elements.pages.value),
                        Number(e.target.elements.rating.value),
                        e.target.elements.read.value === 'true' ? true : false);
     addBookToLibrary(newBook);
-    updateBooks(newBook);
+    refreshLibrary(readView);
 
     e.preventDefault();
 }
@@ -77,4 +105,29 @@ function newBookButtonHandler(e) {
     else {
         newBookForm.style.display = "none";
     }
+}
+
+function readBooksButtonHandler(e) {
+    refreshLibrary(true);
+    readView = true;
+}
+
+function unreadBooksButtonHandler(e) {
+    refreshLibrary(false);
+    readView = false;
+}
+
+function deleteBookBtnHandler(e) {
+    console.log(e);
+    console.log(e.target.getAttribute('data-ind'));
+    bookInd = e.target.getAttribute('data-ind');
+    myLibrary.splice(Number(bookInd),1);
+    refreshLibrary(readView);
+}
+
+function readBookButtonHandler(e) {
+   bookInd = Number(e.target.getAttribute('data-ind'));
+   myLibrary[bookInd].read = !myLibrary[bookInd].read;
+   refreshLibrary(readView);
+
 }
