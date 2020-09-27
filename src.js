@@ -1,3 +1,4 @@
+/* data */
 class Book {
     constructor(title, author, pages, rating, read) {
         this.title = title;
@@ -16,16 +17,11 @@ class Book {
 const myLibrary = [];
 let readView = false; // false to show unread books, true to show read
 
+/* helper functions */
+
 function addBookToLibrary(book) {
     myLibrary.push(book);
 }
-
-// adding a few books for testing purposes...
-addBookToLibrary(new Book("Catcher in the Rye", "Some Guy", 200, 0.8, true));
-addBookToLibrary(new Book("50 Shades of Grey", "Some Woman", 250, 0.0, false));
-addBookToLibrary(new Book("Cannery Row", "John Steinbeck", 220, 0.9, true));
-
-console.table(myLibrary);
 
 function updateBooks(book, bookInd) {
     const bookList = document.getElementById('book-list');
@@ -35,7 +31,6 @@ function updateBooks(book, bookInd) {
     const deleteButton = document.createElement('button');
     deleteButton.addEventListener('click', deleteBookBtnHandler);
     deleteButton.innerText = 'x';
-    deleteButton.style.color = 'red';
     deleteButton.setAttribute('data-ind', bookInd);
     newBookItem.appendChild(deleteButton);
 
@@ -62,17 +57,13 @@ function refreshLibrary(read) {
             updateBooks(myLibrary[bookInd], bookInd);
         }
     }
-
-    /*myLibrary.filter(book => read ? book.read : !book.read)
-             .forEach(book => {
-                updateBooks(book);
-             });
-    */
 }
 
+// load the initial library data
 refreshLibrary(readView);
 
-// Event logic
+/* set up event logic */
+
 newBookButton = document.querySelector("#new-book");
 newBookButton.addEventListener('click', newBookButtonHandler);
 
@@ -84,6 +75,8 @@ unreadBooksButton.addEventListener('click', unreadBooksButtonHandler);
 
 newBookForm = document.querySelector("#new-book-form");
 newBookForm.addEventListener('submit', newBookSubmitHandler);
+
+/* event handlers */
 
 function newBookSubmitHandler(e) {
     newBook = new Book(e.target.elements.title.value,
@@ -129,5 +122,4 @@ function readBookButtonHandler(e) {
    bookInd = Number(e.target.getAttribute('data-ind'));
    myLibrary[bookInd].read = !myLibrary[bookInd].read;
    refreshLibrary(readView);
-
 }

@@ -2,6 +2,6 @@ xxx - Change view to one type of item (read, not read)
 xxx - Add button to toggle read/not read view
 xxx Delete button
 xxx read button
-- Check odin to see what's next
 - Firebase connection
 - Make Style better
+- convert library to library object
