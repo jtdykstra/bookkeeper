@@ -3,5 +3,9 @@ xxx - Add button to toggle read/not read view
 xxx Delete button
 xxx read button
 - Firebase connection
+    - add auth
+    - use the real time database to sync user data
+- login error handling, etc
 - Make Style better
+- circle rating to star shape
 - convert library to library object

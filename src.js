@@ -16,7 +16,19 @@ class Book {
 
 const myLibrary = [];
 let readView = false; // false to show unread books, true to show read
+let bookUser = null;
 
+/* firebase specific logic */
+let database = firebase.database();
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      bookUser = user;
+    } else {
+      bookUser = null;
+    }
+ });
+  
 /* helper functions */
 
 function addBookToLibrary(book) {
@@ -67,6 +79,12 @@ refreshLibrary(readView);
 newBookButton = document.querySelector("#new-book");
 newBookButton.addEventListener('click', newBookButtonHandler);
 
+loginButton = document.getElementById('login-btn');
+loginButton.addEventListener('click', loginButtonHandler);
+
+signOutButton = document.getElementById('signout-btn');
+signOutButton.addEventListener('click', signoutButtonHandler);
+
 readBooksButton = document.querySelector("#read-books-btn");
 readBooksButton.addEventListener('click', readBooksButtonHandler);
 
@@ -76,7 +94,45 @@ unreadBooksButton.addEventListener('click', unreadBooksButtonHandler);
 newBookForm = document.querySelector("#new-book-form");
 newBookForm.addEventListener('submit', newBookSubmitHandler);
 
+loginForm = document.getElementById('login-form');
+loginForm.addEventListener('submit', loginFormSubmitHandler);
+
 /* event handlers */
+
+function signoutButtonHandler(e) {
+    firebase.auth().signOut().then(function() {
+        console.log("signed out");
+      }).catch(function(error) {
+        console.log("sign out failed!");
+      });
+}
+
+function loginFormSubmitHandler(e) {
+    console.log(e.submitter.value);
+    let email = e.target.elements.email.value;
+    let password = e.target.elements.password.value;
+
+    if (e.submitter.value === 'login') {
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+          });
+    }
+    else if (e.submitter.value === 'signup') {
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+          });
+    }
+
+    e.preventDefault();
+}
 
 function newBookSubmitHandler(e) {
     newBook = new Book(e.target.elements.title.value,
@@ -97,6 +153,17 @@ function newBookButtonHandler(e) {
     }
     else {
         newBookForm.style.display = "none";
+    }
+}
+
+function loginButtonHandler(e) {
+    console.log(e);
+    loginButton = document.getElementById('Login');
+    if (loginButton.style.display === "none" || loginButton.style.display === "") {
+        loginButton.style.display = "block";
+    }
+    else {
+        loginButton.style.display = "none";
     }
 }
 

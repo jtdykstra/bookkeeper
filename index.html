@@ -31,10 +31,22 @@
                     <input type="submit" id="new-book-submit">
                 </form>
             </div>
+            <div id="Login">
+                <form action="#" id="login-form">
+                    <h1>Login</h1>
+                    <input type="text" name="email" placeholder="email">
+                    <input type="text" name="password" placeholder="password">
+                    <input type="submit" id="login-submit" value="login">
+                    <input type="submit" id="signup-submit" value="signup">
+                </form>
+            </div>
             <div id="top-bar">
                 <button id="new-book">New</button>
                 <button id="read-books-btn">Read</button>
                 <button id="unread-books-btn">Unread</button>
+                <button id="signup-btn">signup</button>
+                <button id="login-btn">login</button>
+                <button id="signout-btn">signout</button>
             </div>
             <div id="primary-container">
             </div>
@@ -43,6 +55,31 @@
                 </ul>
             </div>
         <main>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+        
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-database.js"></script>
+
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyDLiKTAY8z1UWNoOVg_EotvHV7-Un9Qg2U",
+            authDomain: "bookkeeper-5f7bb.firebaseapp.com",
+            databaseURL: "https://bookkeeper-5f7bb.firebaseio.com",
+            projectId: "bookkeeper-5f7bb",
+            storageBucket: "bookkeeper-5f7bb.appspot.com",
+            messagingSenderId: "516194051880",
+            appId: "1:516194051880:web:115594f859cb174a42921d"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+        </script>
+
+        <!-- the actual app -->
         <script src="src.js"></script>
     </body>
 </html>

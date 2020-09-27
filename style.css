@@ -69,6 +69,36 @@ li {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
 }
 
+#login {
+    display: none;
+    position: fixed;
+    margin: 5vh 0 2vh 0;
+    background-color: white;
+    width: 20vw;
+    height: 40vh;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#login-form div {
+    margin: 2px 0 0 2px;
+}
+
+#login-form input[type="text"], input[type="number"] {
+    width: 90%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ece4e4;
+}
+
 #new-book-form {
     display: flex;
     flex-direction: column;
