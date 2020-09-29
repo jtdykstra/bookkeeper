@@ -14,7 +14,7 @@ class Book {
     }
 }
 
-const myLibrary = [];
+let myLibrary = [];
 let readView = false; // false to show unread books, true to show read
 let bookUser = null;
 
@@ -23,12 +23,26 @@ let database = firebase.database();
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      bookUser = user;
+        bookUser = user;
+        populateUserLibrary();
     } else {
-      bookUser = null;
+        bookUser = null;
     }
+    console.log("auth state change" + bookUser);
  });
-  
+ 
+function populateUserLibrary() {
+    database.ref('/users/' + bookUser.uid).once('value').then(function(snapshot) {
+        let tempLibrary = (snapshot.val() && snapshot.val().library) || [];
+        myLibrary = tempLibrary.map((obj) => 
+             new Book(obj.title, obj.author, obj.pages, obj.rating, obj.read)
+        );
+        console.log("My library after snap shot");
+        console.log(myLibrary);
+        refreshLibrary(readView);
+    });
+}
+
 /* helper functions */
 
 function addBookToLibrary(book) {
@@ -36,6 +50,8 @@ function addBookToLibrary(book) {
 }
 
 function updateBooks(book, bookInd) {
+    console.log(book);
+    console.log(typeof book);
     const bookList = document.getElementById('book-list');
     const newBookItem = document.createElement('li');
     newBookItem.innerText = book.info();
@@ -56,6 +72,7 @@ function updateBooks(book, bookInd) {
 }
 
 function refreshLibrary(read) {
+    console.log("Refreshing library start");
     // remove all items from the list
     // todo: this can probably be more efficient
     bookList = document.getElementById('book-list');
@@ -63,8 +80,12 @@ function refreshLibrary(read) {
         bookList.removeChild(bookList.lastChild);
     }
     
+    console.log("refreshing library, my library is ");
+    console.log(myLibrary);
+
     // now add all of the books back
     for (let bookInd = 0; bookInd < myLibrary.length; ++bookInd) {
+        console.log("got to loop");
         if (myLibrary[bookInd].read === read) {
             updateBooks(myLibrary[bookInd], bookInd);
         }
@@ -105,6 +126,8 @@ function signoutButtonHandler(e) {
       }).catch(function(error) {
         console.log("sign out failed!");
       });
+    myLibrary = [];
+    refreshLibrary(readView);
 }
 
 function loginFormSubmitHandler(e) {
@@ -131,6 +154,8 @@ function loginFormSubmitHandler(e) {
           });
     }
 
+    console.log(bookUser);
+
     e.preventDefault();
 }
 
@@ -142,7 +167,14 @@ function newBookSubmitHandler(e) {
                        e.target.elements.read.value === 'true' ? true : false);
     addBookToLibrary(newBook);
     refreshLibrary(readView);
-
+    
+    if (bookUser)
+    {
+        database.ref('users/' + bookUser.uid).set({
+            library: myLibrary
+        });
+    }
+      
     e.preventDefault();
 }
 
@@ -182,11 +214,23 @@ function deleteBookBtnHandler(e) {
     console.log(e.target.getAttribute('data-ind'));
     bookInd = e.target.getAttribute('data-ind');
     myLibrary.splice(Number(bookInd),1);
+    if (bookUser)
+    {
+        database.ref('users/' + bookUser.uid).set({
+            library: myLibrary
+        });
+    }
     refreshLibrary(readView);
 }
 
 function readBookButtonHandler(e) {
    bookInd = Number(e.target.getAttribute('data-ind'));
    myLibrary[bookInd].read = !myLibrary[bookInd].read;
+   if (bookUser)
+   {
+        firebase.database().ref('users/' + bookUser.uid).set({
+            library: myLibrary
+        });
+   }
    refreshLibrary(readView);
 }
