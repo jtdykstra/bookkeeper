@@ -1,11 +1,7 @@
-xxx - Change view to one type of item (read, not read)
-xxx - Add button to toggle read/not read view
-xxx Delete button
-xxx read button
-- Firebase connection
-    - add auth
-    - use the real time database to sync user data
+- selector for sorting data
+- fix button issues
 - login error handling, etc
+- make function for mobile
 - Make Style better
 - circle rating to star shape
 - convert library to library object
