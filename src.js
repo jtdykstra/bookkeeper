@@ -17,6 +17,7 @@ class Book {
 let myLibrary = [];
 let readView = false; // false to show unread books, true to show read
 let bookUser = null;
+let libraryFilter = 'raw';
 
 /* firebase specific logic */
 let database = firebase.database();
@@ -39,7 +40,7 @@ function populateUserLibrary() {
         );
         console.log("My library after snap shot");
         console.log(myLibrary);
-        refreshLibrary(readView);
+        refreshLibrary();
     });
 }
 
@@ -50,8 +51,6 @@ function addBookToLibrary(book) {
 }
 
 function updateBooks(book, bookInd) {
-    console.log(book);
-    console.log(typeof book);
     const bookList = document.getElementById('book-list');
     const newBookItem = document.createElement('li');
     newBookItem.innerText = book.info();
@@ -71,8 +70,23 @@ function updateBooks(book, bookInd) {
     bookList.appendChild(newBookItem);
 }
 
-function refreshLibrary(read) {
-    console.log("Refreshing library start");
+function filterLibrary()
+{
+    switch(libraryFilter) {
+        case 'raw':
+            return myLibrary;
+        case 'read':
+            return myLibrary.filter(book => book.read); 
+        case 'unread':
+            return myLibrary.filter(book => !book.read);
+        case 'highest rated':
+            return [...myLibrary].sort((a, b) => a.rating > b.rating ? -1 : 1);
+        default:
+            return myLibrary;
+    }
+}
+
+function refreshLibrary() {
     // remove all items from the list
     // todo: this can probably be more efficient
     bookList = document.getElementById('book-list');
@@ -80,20 +94,16 @@ function refreshLibrary(read) {
         bookList.removeChild(bookList.lastChild);
     }
     
-    console.log("refreshing library, my library is ");
-    console.log(myLibrary);
+    let modifiedLibrary = filterLibrary();
 
     // now add all of the books back
-    for (let bookInd = 0; bookInd < myLibrary.length; ++bookInd) {
-        console.log("got to loop");
-        if (myLibrary[bookInd].read === read) {
-            updateBooks(myLibrary[bookInd], bookInd);
-        }
+    for (let bookInd = 0; bookInd < modifiedLibrary.length; ++bookInd) {
+        updateBooks(modifiedLibrary[bookInd], myLibrary.indexOf(modifiedLibrary[bookInd]));
     }
 }
 
 // load the initial library data
-refreshLibrary(readView);
+refreshLibrary();
 
 /* set up event logic */
 
@@ -106,19 +116,21 @@ loginButton.addEventListener('click', loginButtonHandler);
 signOutButton = document.getElementById('signout-btn');
 signOutButton.addEventListener('click', signoutButtonHandler);
 
-readBooksButton = document.querySelector("#read-books-btn");
-readBooksButton.addEventListener('click', readBooksButtonHandler);
-
-unreadBooksButton = document.querySelector("#unread-books-btn");
-unreadBooksButton.addEventListener('click', unreadBooksButtonHandler);
-
 newBookForm = document.querySelector("#new-book-form");
 newBookForm.addEventListener('submit', newBookSubmitHandler);
 
 loginForm = document.getElementById('login-form');
 loginForm.addEventListener('submit', loginFormSubmitHandler);
 
+sortSelect = document.getElementById('sort-select');
+sortSelect.addEventListener('change', sortChangeHandler);
+
 /* event handlers */
+
+function sortChangeHandler(e) {
+    libraryFilter = e.target.value;
+    refreshLibrary();
+}
 
 function signoutButtonHandler(e) {
     firebase.auth().signOut().then(function() {
@@ -127,7 +139,7 @@ function signoutButtonHandler(e) {
         console.log("sign out failed!");
       });
     myLibrary = [];
-    refreshLibrary(readView);
+    refreshLibrary();
 }
 
 function loginFormSubmitHandler(e) {
@@ -166,7 +178,7 @@ function newBookSubmitHandler(e) {
                        Number(e.target.elements.rating.value),
                        e.target.elements.read.value === 'true' ? true : false);
     addBookToLibrary(newBook);
-    refreshLibrary(readView);
+    refreshLibrary();
     
     if (bookUser)
     {
@@ -199,16 +211,6 @@ function loginButtonHandler(e) {
     }
 }
 
-function readBooksButtonHandler(e) {
-    refreshLibrary(true);
-    readView = true;
-}
-
-function unreadBooksButtonHandler(e) {
-    refreshLibrary(false);
-    readView = false;
-}
-
 function deleteBookBtnHandler(e) {
     console.log(e);
     console.log(e.target.getAttribute('data-ind'));
@@ -220,7 +222,7 @@ function deleteBookBtnHandler(e) {
             library: myLibrary
         });
     }
-    refreshLibrary(readView);
+    refreshLibrary();
 }
 
 function readBookButtonHandler(e) {
@@ -232,5 +234,5 @@ function readBookButtonHandler(e) {
             library: myLibrary
         });
    }
-   refreshLibrary(readView);
+   refreshLibrary();
 }
