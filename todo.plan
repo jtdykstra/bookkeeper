@@ -1,9 +1,7 @@
-- selector for sorting data
-    - need to fix index association now
-- fix button issues
 - login error handling, etc
 - responsive signup/login/signout
 - make function for mobile
 - Make Style better
 - circle rating to star shape
 - convert library to library object
+- google books api for lookup?

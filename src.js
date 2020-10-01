@@ -46,6 +46,11 @@ function populateUserLibrary() {
 
 /* helper functions */
 
+function closeViews() {
+    views = document.querySelectorAll('.view');
+    [...views].forEach((v) => v.style.display = 'none');
+}
+
 function addBookToLibrary(book) {
     myLibrary.push(book);
 }
@@ -192,7 +197,9 @@ function newBookSubmitHandler(e) {
 
 function newBookButtonHandler(e) {
     newBookForm = document.querySelector("#add-new-book");
+
     if (newBookForm.style.display === "none" || newBookForm.style.display === "") {
+        closeViews();
         newBookForm.style.display = "block";
     }
     else {
@@ -201,9 +208,10 @@ function newBookButtonHandler(e) {
 }
 
 function loginButtonHandler(e) {
-    console.log(e);
     loginButton = document.getElementById('Login');
+
     if (loginButton.style.display === "none" || loginButton.style.display === "") {
+        closeViews();
         loginButton.style.display = "block";
     }
     else {
