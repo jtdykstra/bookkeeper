@@ -18,6 +18,7 @@ let myLibrary = [];
 let readView = false; // false to show unread books, true to show read
 let bookUser = null;
 let libraryFilter = 'raw';
+let loggedIn = false;
 
 /* firebase specific logic */
 let database = firebase.database();
@@ -25,8 +26,12 @@ let database = firebase.database();
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         bookUser = user;
+        loggedIn = true;
+        updateSignedInStatus(true);
         populateUserLibrary();
     } else {
+        updateSignedInStatus(false);
+        loggedIn = false;
         bookUser = null;
     }
     console.log("auth state change" + bookUser);
@@ -38,13 +43,16 @@ function populateUserLibrary() {
         myLibrary = tempLibrary.map((obj) => 
              new Book(obj.title, obj.author, obj.pages, obj.rating, obj.read)
         );
-        console.log("My library after snap shot");
-        console.log(myLibrary);
         refreshLibrary();
     });
 }
 
 /* helper functions */
+
+function updateSignedInStatus(status) {
+    signedInStatus = document.getElementById('sign-in-status');
+    signedInStatus.innerText = status ? 'signed in' : 'signed out';
+}
 
 function closeViews() {
     views = document.querySelectorAll('.view');
@@ -111,7 +119,6 @@ function refreshLibrary() {
 refreshLibrary();
 
 /* set up event logic */
-
 newBookButton = document.querySelector("#new-book");
 newBookButton.addEventListener('click', newBookButtonHandler);
 
@@ -153,19 +160,37 @@ function loginFormSubmitHandler(e) {
     let password = e.target.elements.password.value;
 
     if (e.submitter.value === 'login') {
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        
+        .then(() => {
+            console.log("login success!");
+            document.getElementById('Login').style.display = 'none';
+        })
+        .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
+            
+            loginStatus = document.getElementById('login-status');
+            loginStatus.innerText = errorMessage;
+            loginStatus.style.color = 'red';
             console.log(errorCode);
             console.log(errorMessage);
           });
     }
     else if (e.submitter.value === 'signup') {
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-            // Handle Errors here.
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log("signup success!");
+            document.getElementById('Login').style.display = 'none';
+        })
+        .catch(function(error) {
             var errorCode = error.code;
             var errorMessage = error.message;
+
+            loginStatus = document.getElementById('login-status');
+            loginStatus.innerText = errorMessage;
+            loginStatus.style.color = 'red';
             console.log(errorCode);
             console.log(errorMessage);
           });
@@ -198,7 +223,7 @@ function newBookSubmitHandler(e) {
 function newBookButtonHandler(e) {
     newBookForm = document.querySelector("#add-new-book");
 
-    if (newBookForm.style.display === "none" || newBookForm.style.display === "") {
+    if (loggedIn === true && (newBookForm.style.display === "none" || newBookForm.style.display === "")) {
         closeViews();
         newBookForm.style.display = "block";
     }

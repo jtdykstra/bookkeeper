@@ -1,6 +1,6 @@
-- login error handling, etc
-- responsive signup/login/signout
-- make function for mobile
+- read up on the rest of firebase access
+    - how to delete in the middle of a list?
+- make functional for mobile
 - Make Style better
 - circle rating to star shape
 - convert library to library object
