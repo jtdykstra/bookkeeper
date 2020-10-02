@@ -147,6 +147,11 @@ loginForm.addEventListener('submit', loginFormSubmitHandler);
 sortSelect = document.getElementById('sort-select');
 sortSelect.addEventListener('change', sortChangeHandler);
 
+window.addEventListener('resize', () => {
+    // We execute the same script as before
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  });
 /* event handlers */
 
 function sortChangeHandler(e) {

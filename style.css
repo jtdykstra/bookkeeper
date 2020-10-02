@@ -7,6 +7,7 @@ html, body {
 
 #primary-container {
     height: 5vh;
+    height: calc(var(--vh, 1vh) * 5);
 }
 
 #book-container {
@@ -15,19 +16,13 @@ html, body {
     justify-content: center;
     align-items: center;
     height: 95vh;
+    height: calc(var(--vh, 1vh) * 95);
     width: 100vw;
 }
 
 #book-list {
     height: 95vh;
-}
-
-#readbooks {
-    height: 95vh;
-}
-
-#unreadbooks {
-    height: 95vh;
+    height: calc(var(--vh, 1vh) * 95);
 }
 
 li {
@@ -43,6 +38,7 @@ li {
     align-items: center;
     width: 100vw;
     height: 5vh;
+    height: calc(var(--vh, 1vh) * 5);
     position: fixed;
     background-color: blue;
 }
@@ -66,6 +62,7 @@ li {
         background-color: white;
         width: 100vw;
         height: 95vh;
+        height: calc(var(--vh, 1vh) * 95);
     }
 }
 
@@ -76,6 +73,7 @@ li {
     background-color: white;
     width: 100vw;
     height: 95vh;
+    height: calc(var(--vh, 1vh) * 95);
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
 }
 
@@ -86,6 +84,7 @@ li {
     align-content: center;
     align-items: center;
     height: 95vh;
+    height: calc(var(--vh, 1vh) * 95);
 }
 
 #login-form div {
