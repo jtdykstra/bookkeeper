@@ -1,6 +1,7 @@
 @import "reset.css";
 
-body {
+html, body {
+    height: 100%;
     font-family: arial;
 }
 
@@ -15,6 +16,10 @@ body {
     align-items: center;
     height: 95vh;
     width: 100vw;
+}
+
+#book-list {
+    height: 95vh;
 }
 
 #readbooks {
@@ -80,7 +85,7 @@ li {
     justify-content: space-around;
     align-content: center;
     align-items: center;
-    height: 100%;
+    height: 95vh;
 }
 
 #login-form div {
