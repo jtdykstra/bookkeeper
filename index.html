@@ -33,25 +33,24 @@
             </div>
             <div id="Login" class='view'>
                 <form id="login-form">
-                    <h1>Login</h1>
+                    <h1>Bookkeeper Login</h1>
                     <input type="text" name="email" placeholder="email">
-                    <input type="text" name="password" placeholder="password">
+                    <input type="password" name="password" placeholder="password">
                     <p id="login-status"></p>
                     <input type="submit" id="login-submit" value="login">
                     <input type="submit" id="signup-submit" value="signup">
                 </form>
             </div>
             <div id="top-bar">
-                <button id="new-book">New</button>
-                <button id="login-btn">login</button>
-                <button id="signout-btn">signout</button>
-                <select name="sort" id="sort-select">
+                <button id="new-book" class="topbar">New</button>
+                <button id="signout-btn" class="topbar">signout</button>
+                <select name="sort" id="sort-select" class="topbar">
                     <option value="raw">raw</option>
                     <option value="read">read</option>
                     <option value="unread">unread</option>
                     <option value="highest rated">highest rated</option>
                 </select>
-                <p id='sign-in-status'>signed out</p>
+                <p id='sign-in-status' class="topbar">signed out</p>
             </div>
             <div id="primary-container">
             </div>

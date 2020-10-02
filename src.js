@@ -31,8 +31,11 @@ firebase.auth().onAuthStateChanged(function(user) {
         populateUserLibrary();
     } else {
         updateSignedInStatus(false);
+        showTopBar(false);
         loggedIn = false;
         bookUser = null;
+        loginForm = document.getElementById('Login');
+        loginForm.style.display = 'block';
     }
     console.log("auth state change" + bookUser);
  });
@@ -44,10 +47,19 @@ function populateUserLibrary() {
              new Book(obj.title, obj.author, obj.pages, obj.rating, obj.read)
         );
         refreshLibrary();
+        closeViews();
+        showTopBar(true);
     });
 }
 
 /* helper functions */
+
+function showTopBar(show) {
+   topBarItems = document.querySelectorAll('.topbar');
+   [...topBarItems].forEach((item) => {
+       item.style.display = show ? 'block' : 'none';
+   })
+}
 
 function updateSignedInStatus(status) {
     signedInStatus = document.getElementById('sign-in-status');
@@ -117,13 +129,11 @@ function refreshLibrary() {
 
 // load the initial library data
 refreshLibrary();
+showTopBar(false);
 
 /* set up event logic */
 newBookButton = document.querySelector("#new-book");
 newBookButton.addEventListener('click', newBookButtonHandler);
-
-loginButton = document.getElementById('login-btn');
-loginButton.addEventListener('click', loginButtonHandler);
 
 signOutButton = document.getElementById('signout-btn');
 signOutButton.addEventListener('click', signoutButtonHandler);
@@ -229,18 +239,6 @@ function newBookButtonHandler(e) {
     }
     else {
         newBookForm.style.display = "none";
-    }
-}
-
-function loginButtonHandler(e) {
-    loginButton = document.getElementById('Login');
-
-    if (loginButton.style.display === "none" || loginButton.style.display === "") {
-        closeViews();
-        loginButton.style.display = "block";
-    }
-    else {
-        loginButton.style.display = "none";
     }
 }
 
