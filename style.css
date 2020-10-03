@@ -17,13 +17,13 @@ button, input[type="submit"] {
     font-family:'Roboto',sans-serif;
     font-weight:300;
     color:#FFFFFF;
-    background-color:#4eb5f1;
+    background-color: #3c8ef6;
     text-align:center;
     transition: all 0.2s;
 }
 
 button:hover, input[type="submit"]:hover{
-    background-color:#4095c6;
+    background-color:#3c8ef6 ;
 }
 
 @media all and (max-width:30em) {
@@ -67,7 +67,7 @@ li {
     height: 5vh;
     height: calc(var(--vh, 1vh) * 5);
     position: fixed;
-    background-color: blue;
+    background-color: #0c71f3;
 }
 
 
