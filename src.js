@@ -62,8 +62,8 @@ function showTopBar(show) {
 }
 
 function updateSignedInStatus(status) {
-    signedInStatus = document.getElementById('sign-in-status');
-    signedInStatus.innerText = status ? 'signed in' : 'signed out';
+    //signedInStatus = document.getElementById('sign-in-status');
+    //signedInStatus.innerText = status ? 'signed in' : 'signed out';
 }
 
 function closeViews() {
