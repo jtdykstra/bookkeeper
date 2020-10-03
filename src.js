@@ -77,19 +77,44 @@ function addBookToLibrary(book) {
 
 function updateBooks(book, bookInd) {
     const bookList = document.getElementById('book-list');
-    const newBookItem = document.createElement('li');
-    newBookItem.innerText = book.info();
+    const newBookItem = document.createElement('ul');
+    newBookItem.classList.add('book-entry');
+    
+    const title = document.createElement('li');
+    title.innerText = `title: ${book.title}`;
+    title.style.gridArea = 'title';
+    newBookItem.appendChild(title);
+
+    const author = document.createElement('li');
+    author.innerText = `by: ${book.author}`;
+    author.style.gridArea = 'author';
+    newBookItem.appendChild(author);
+    
+    const pages = document.createElement('li');
+    pages.innerText = `${book.pages} pages`;
+    pages.style.gridArea = 'pages';
+    newBookItem.appendChild(pages);
+
+    const rating = document.createElement('li');
+    rating.innerText = `${Number(book.rating)/0.2} stars`;
+    rating.style.textAlign = 'right';
+    rating.style.gridArea = 'rating';
+    newBookItem.appendChild(rating);
 
     const deleteButton = document.createElement('button');
     deleteButton.addEventListener('click', deleteBookBtnHandler);
     deleteButton.innerText = 'x';
     deleteButton.setAttribute('data-ind', bookInd);
+    deleteButton.style.gridArea = 'delete';
+    deleteButton.style.margin = '0 0 auto auto';
     newBookItem.appendChild(deleteButton);
 
     const readButton = document.createElement('button');
     readButton.addEventListener('click', readBookButtonHandler);
     readButton.innerText = 'read';
     readButton.setAttribute('data-ind', bookInd);
+    readButton.style.gridArea = 'read';
+    readButton.style.margin = '0 0 auto auto';
     newBookItem.appendChild(readButton);
 
     bookList.appendChild(newBookItem);
