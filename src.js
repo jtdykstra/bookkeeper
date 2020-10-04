@@ -81,12 +81,13 @@ function updateBooks(book, bookInd) {
     newBookItem.classList.add('book-entry');
     
     const title = document.createElement('li');
-    title.innerText = `title: ${book.title}`;
+    title.innerText = `${book.title}`;
+    title.style.fontWeight = 'bold';
     title.style.gridArea = 'title';
     newBookItem.appendChild(title);
 
     const author = document.createElement('li');
-    author.innerText = `by: ${book.author}`;
+    author.innerText = `${book.author}`;
     author.style.gridArea = 'author';
     newBookItem.appendChild(author);
     
