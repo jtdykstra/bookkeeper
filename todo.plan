@@ -1,7 +1,7 @@
+- add permanent margin on the sides
+- figure out text wrap issues for title, etc
 - read up on the rest of firebase access
     - how to delete in the middle of a list?
-- make functional for mobile
-- Fix button layout
 - circle rating to star shape
 - convert library to library object
 - google books api for lookup?

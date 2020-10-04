@@ -84,6 +84,8 @@ function updateBooks(book, bookInd) {
     title.innerText = `${book.title}`;
     title.style.fontWeight = 'bold';
     title.style.gridArea = 'title';
+    title.style.wordWrap = 'break-word';
+    title.style.wordBreak = 'breakAll';
     newBookItem.appendChild(title);
 
     const author = document.createElement('li');
@@ -107,12 +109,11 @@ function updateBooks(book, bookInd) {
     deleteButton.innerText = 'x';
     deleteButton.setAttribute('data-ind', bookInd);
     deleteButton.style.gridArea = 'delete';
-    deleteButton.style.margin = '0 0 auto auto';
     newBookItem.appendChild(deleteButton);
 
     const readButton = document.createElement('button');
     readButton.addEventListener('click', readBookButtonHandler);
-    readButton.innerText = 'read';
+    readButton.innerText = book.read ? 'read' : 'unread';
     readButton.setAttribute('data-ind', bookInd);
     readButton.style.gridArea = 'read';
     readButton.style.margin = '0 0 auto auto';

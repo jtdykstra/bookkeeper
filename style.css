@@ -21,6 +21,10 @@ button, input[type="submit"] {
     transition: all 0.2s;
 }
 
+ul button {
+    margin: 1vh 0 1vh auto;
+}
+
 button:hover, input[type="submit"]:hover{
     background-color:#3c8ef6 ;
 }
@@ -50,20 +54,21 @@ button:hover, input[type="submit"]:hover{
 #book-list {
     height: 95vh;
     height: calc(var(--vh, 1vh) * 95);
+    width: 80vw;
 }
 
 ul .book-entry {
     display: grid;
-    margin: 1vh 0 1vh 0;
+    margin: 5vh 0 5vh 0;
     justify-content: center;
     align-content: center;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 20vw);
+    grid-template-rows: repeat(3, auto);
     grid-template-areas:
         "title title read"
         "author author delete"
         "pages filler rating";
-    width: 80vw;
+    width: 100%;
 }
 
 #top-bar {
