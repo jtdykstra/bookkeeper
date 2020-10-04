@@ -62,7 +62,8 @@ ul .book-entry {
     grid-template-areas:
         "title title read"
         "author author delete"
-        "pages filler rating"
+        "pages filler rating";
+    width: 80vw;
 }
 
 #top-bar {
