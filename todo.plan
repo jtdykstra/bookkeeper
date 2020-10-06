@@ -1,3 +1,4 @@
+- complete check mark removal handling
 - bug involving new book display on mobile
 - read up on the rest of firebase access
     - how to delete in the middle of a list?

@@ -113,6 +113,7 @@ function updateBooks(book, bookInd) {
     title.style.wordBreak = 'breakAll';
     title.setAttribute('contenteditable', true);
     title.setAttribute('data-type', 'title');
+    title.addEventListener('focus', focusEventHandler);
     newBookItem.appendChild(title);
 
     const author = document.createElement('li');
@@ -120,16 +121,19 @@ function updateBooks(book, bookInd) {
     author.style.gridArea = 'author';
     author.setAttribute('contenteditable', true);
     author.setAttribute('data-type', 'author');
+    author.addEventListener('focus', focusEventHandler);
     newBookItem.appendChild(author);
     
     const pages = document.createElement('li');
     pages.style.gridArea = 'pages';
-    pages.innerHTML =  `<span contenteditable=true data-type="pages">${book.pages}</span>` + ' pages';
+    pages.innerHTML =  `<span contenteditable=true data-type="pages" onfocus="focusEventHandler()">\
+                            ${book.pages}</span>` + ' pages';
     pages.setAttribute('data-type', 'pages');
     newBookItem.appendChild(pages);
 
     const rating = document.createElement('li');
-    rating.innerHTML = `<span contenteditable=true data-type="rating">${Number(book.rating)}</span>` + ' stars';
+    rating.innerHTML = `<span contenteditable=true data-type="rating" onfocus="focusEventHandler()">\
+                            ${Number(book.rating)}</span>` + ' stars';
     rating.style.textAlign = 'right';
     rating.style.gridArea = 'rating';
     newBookItem.appendChild(rating);
@@ -206,6 +210,7 @@ sortSelect.addEventListener('change', sortChangeHandler);
 
 bookList = document.getElementById('book-list');
 bookList.addEventListener('keypress', contentChangeHandler);
+bookList.addEventListener('click', bookClickHandler);
 
 window.addEventListener('resize', () => {
     // We execute the same script as before
@@ -214,6 +219,16 @@ window.addEventListener('resize', () => {
   });
 
 /* event handlers */
+
+// is this need?
+function bookClickHandler(e) {
+    console.log("book click!");
+}
+
+// TODO: Remove me!
+function focusEventHandler(e) {
+    console.log('input event');
+}
 
 function contentChangeHandler(e) {
     console.log(e.key);
