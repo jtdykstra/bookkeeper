@@ -1,5 +1,4 @@
-- add permanent margin on the sides
-- figure out text wrap issues for title, etc
+- bug involving new book display on mobile
 - read up on the rest of firebase access
     - how to delete in the middle of a list?
 - circle rating to star shape

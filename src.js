@@ -12,6 +12,30 @@ class Book {
         return `${this.title} by ${this.author}, ${this.pages} pages,` + 
                `${this.read ? " read" : " not read"}, rating ${this.rating}`;
     }
+
+    updateContent(field, value)
+    {
+        switch(field)
+        {
+            case 'title':
+                this.title = value;
+                break;
+            case 'author':
+                this.author = value;
+                break;
+            case 'rating':
+                this.rating = Number(value);
+                break;
+            case 'read':
+                this.read = bool(value);
+                break;
+            case 'pages':
+                this.pages = Number(value);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 let myLibrary = [];
@@ -78,6 +102,7 @@ function addBookToLibrary(book) {
 function updateBooks(book, bookInd) {
     const bookList = document.getElementById('book-list');
     const newBookItem = document.createElement('ul');
+    newBookItem.setAttribute('data-ind', bookInd);
     newBookItem.classList.add('book-entry');
     
     const title = document.createElement('li');
@@ -86,20 +111,25 @@ function updateBooks(book, bookInd) {
     title.style.gridArea = 'title';
     title.style.wordWrap = 'break-word';
     title.style.wordBreak = 'breakAll';
+    title.setAttribute('contenteditable', true);
+    title.setAttribute('data-type', 'title');
     newBookItem.appendChild(title);
 
     const author = document.createElement('li');
     author.innerText = `${book.author}`;
     author.style.gridArea = 'author';
+    author.setAttribute('contenteditable', true);
+    author.setAttribute('data-type', 'author');
     newBookItem.appendChild(author);
     
     const pages = document.createElement('li');
-    pages.innerText = `${book.pages} pages`;
     pages.style.gridArea = 'pages';
+    pages.innerHTML =  `<span contenteditable=true data-type="pages">${book.pages}</span>` + ' pages';
+    pages.setAttribute('data-type', 'pages');
     newBookItem.appendChild(pages);
 
     const rating = document.createElement('li');
-    rating.innerText = `${Number(book.rating)/0.2} stars`;
+    rating.innerHTML = `<span contenteditable=true data-type="rating">${Number(book.rating)}</span>` + ' stars';
     rating.style.textAlign = 'right';
     rating.style.gridArea = 'rating';
     newBookItem.appendChild(rating);
@@ -174,12 +204,37 @@ loginForm.addEventListener('submit', loginFormSubmitHandler);
 sortSelect = document.getElementById('sort-select');
 sortSelect.addEventListener('change', sortChangeHandler);
 
+bookList = document.getElementById('book-list');
+bookList.addEventListener('keypress', contentChangeHandler);
+
 window.addEventListener('resize', () => {
     // We execute the same script as before
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   });
+
 /* event handlers */
+
+function contentChangeHandler(e) {
+    console.log(e.key);
+    console.log(Number(e.target.parentNode.getAttribute('data-ind')))
+    let dataInd = Number(e.target.parentNode.getAttribute('data-ind'));
+    let dataType = e.target.getAttribute('data-type');
+    
+    if (e.key === 'Enter') {
+        console.log(dataType);
+        console.log(e.target.innerText);
+        myLibrary[dataInd].updateContent(dataType, e.target.innerText); 
+        e.target.blur();
+        e.preventDefault();
+        if (bookUser) {
+            console.log("submitting content!");
+            database.ref('users/' + bookUser.uid).set({
+                library: myLibrary
+            });
+        }
+    }
+}
 
 function sortChangeHandler(e) {
     libraryFilter = e.target.value;
